@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Units</title>
+  <link rel="stylesheet" href="units.css">
+</head>
+<body>
+  <main class="container">
+    <h1>My Units</h1>
+
+    <form id="unit-form">
+      <input id="code" placeholder="Unit code (e.g. SOEN 202)" required>
+      <input id="name" placeholder="Unit name" required>
+      <input id="lecturer" placeholder="Lecturer">
+      <input id="semester" placeholder="Semester (e.g. 2.1)">
+      <button type="submit">Add unit</button>
+    </form>
+
+    <p id="message"></p>
+    <ul id="unit-list"></ul>
+
+  </main>
+
+  <script src="units.js"></script>
+</body>
+</html>
