@@ -1,7 +1,7 @@
 :root {
-    --bg-color: #f4f4f9;
-    --text-color: #333333;
-    --primary-color: #0056b3;
+    --bg-color: #f4f6fb;
+    --text-color: #212529;
+    --primary-color: #3b5bdb;
     --navbar-bg: #2c3e50;
     --navbar-text: #ffffff;
     --card-bg: #ffffff;
@@ -9,7 +9,7 @@
 
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
 }
@@ -25,7 +25,7 @@ body {
 }
 
 .nav-brand {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: bold;
 }
 
@@ -41,7 +41,6 @@ body {
     color: var(--navbar-text);
     text-decoration: none;
     font-weight: bold;
-    font-size: 1.1rem;
 }
 
 .nav-links a:hover {
@@ -63,9 +62,10 @@ body {
 
 .card {
     background-color: var(--card-bg);
+    border: 1px solid #dee2e6;
     padding: 1.5rem;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.06);
     flex: 1;
 }
 

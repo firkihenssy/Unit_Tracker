@@ -7,20 +7,30 @@
   <link rel="stylesheet" href="units.css">
 </head>
 <body>
+  <nav class="navbar">
+    <div class="nav-brand">Unit Tracker</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Dashboard</a></li>
+      <li><a href="units.html">Units</a></li>
+      <li><a href="assignments.html">Assignments</a></li>
+    </ul>
+  </nav>
+
   <main class="container">
-    <h1>My Units</h1>
+    <div class="card">
+      <h1>My Units</h1>
 
-    <form id="unit-form">
-      <input id="code" placeholder="Unit code (e.g. SOEN 202)" required>
-      <input id="name" placeholder="Unit name" required>
-      <input id="lecturer" placeholder="Lecturer">
-      <input id="semester" placeholder="Semester (e.g. 2.1)">
-      <button type="submit">Add unit</button>
-    </form>
+      <form id="unit-form">
+        <input id="code" placeholder="Unit code (e.g. SOEN 202)" required>
+        <input id="name" placeholder="Unit name" required>
+        <input id="lecturer" placeholder="Lecturer">
+        <input id="semester" placeholder="Semester (e.g. 2.1)">
+        <button type="submit">Add unit</button>
+      </form>
 
-    <p id="message"></p>
-    <ul id="unit-list"></ul>
-
+      <p id="message"></p>
+      <ul id="unit-list"></ul>
+    </div>
   </main>
 
   <script src="units.js"></script>
