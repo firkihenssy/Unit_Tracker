@@ -22,7 +22,7 @@ async function loadAssignments() {
     const tr = document.createElement('tr');
     if (item.done) tr.className = 'done';
     tr.innerHTML = `<td><input type="checkbox" ${item.done ? 'checked' : ''}></td>
-      <td></td><td></td><td><button>Edit</button> <button>Delete</button></td>`;
+      <td></td><td></td><td><button>Edit</button> <button class="delete">Delete</button></td>`;
     const cells = tr.querySelectorAll('td');
     cells[1].textContent = item.title;
     cells[2].textContent = item.due_date;

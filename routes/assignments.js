@@ -1,7 +1,18 @@
 const express = require('express');
+const fs = require('fs');
+const path = require('path');
 const router = express.Router();
 const db = require('../db');
 const unitsStore = require('../store/unitsStore');
+
+const DATA_JSON = path.join(__dirname, '..', 'data.json');
+
+// Keep data.json synced so Erick's /dashboard route reads live SQLite assignments
+function syncJsonMirror() {
+  const assignments = db.prepare('SELECT * FROM assignments ORDER BY due_date ASC').all();
+  fs.writeFileSync(DATA_JSON, JSON.stringify({ assignments }, null, 2));
+}
+syncJsonMirror();
 
 function validateInput({ title, due_date, unit_id }) {
   if (!title || title.trim() === '') return 'Title is required';
@@ -44,6 +55,7 @@ router.post('/', (req, res) => {
     .prepare('SELECT * FROM assignments WHERE id = ?')
     .get(info.lastInsertRowid);
 
+  syncJsonMirror();
   res.status(201).json(created);
 });
 
@@ -62,6 +74,7 @@ router.put('/:id', (req, res) => {
   }
 
   const updated = db.prepare('SELECT * FROM assignments WHERE id = ?').get(id);
+  syncJsonMirror();
   res.json(updated);
 });
 
@@ -73,6 +86,7 @@ router.delete('/:id', (req, res) => {
     return res.status(404).json({ error: 'Assignment not found' });
   }
 
+  syncJsonMirror();
   res.json({ deleted: true, id: Number(id) });
 });
 
@@ -87,6 +101,7 @@ router.patch('/:id/done', (req, res) => {
   }
 
   const updated = db.prepare('SELECT * FROM assignments WHERE id = ?').get(id);
+  syncJsonMirror();
   res.json(updated);
 });
 

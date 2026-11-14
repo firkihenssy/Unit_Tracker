@@ -156,3 +156,4 @@ system_explainer.html
 
 # SQLite database
 *.db
+data.json

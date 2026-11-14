@@ -1,78 +1,58 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Unit Tracker — Assignments</title>
-    <style>
-      body {
-        font-family: system-ui, sans-serif;
-        max-width: 760px;
-        margin: 32px auto;
-        padding: 0 16px;
-      }
-      form {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-        margin-bottom: 12px;
-      }
-      input,
-      button {
-        padding: 7px 10px;
-        font-size: 14px;
-      }
-      #errorMsg {
-        color: #b91c1c;
-        margin-bottom: 10px;
-        font-weight: 600;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-      th,
-      td {
-        padding: 8px 10px;
-        border-bottom: 1px solid #ddd;
-        text-align: left;
-      }
-      .done {
-        text-decoration: line-through;
-        color: #777;
-      }
-    </style>
-  </head>
-  <body>
-    <nav style="margin-bottom: 12px">
-      <a href="/units.html">Units</a> | <strong>Assignments</strong>
-    </nav>
-    <h1>Assignments</h1>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit Tracker — Assignments</title>
+  <style>
+    body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: #f4f6fb; color: #212529; }
+    .navbar { display: flex; justify-content: space-between; align-items: center; background: #2c3e50; padding: 1rem 2rem; color: #fff; }
+    .nav-brand { font-size: 1.4rem; font-weight: bold; }
+    .nav-links { display: flex; list-style: none; gap: 1.5rem; margin: 0; padding: 0; }
+    .nav-links a { color: #fff; text-decoration: none; font-weight: bold; }
+    .nav-links a:hover { text-decoration: underline; }
+    .container { max-width: 760px; margin: 28px auto; padding: 0 16px; }
+    .card { background: #fff; border: 1px solid #dee2e6; border-radius: 8px; padding: 18px; box-shadow: 0 4px 6px rgba(0,0,0,0.06); }
+    form { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+    input { padding: 9px 10px; font-size: 14px; border: 1px solid #dee2e6; border-radius: 8px; flex: 1; }
+    button { padding: 8px 14px; font-size: 14px; border: none; border-radius: 8px; background: #3b5bdb; color: #fff; cursor: pointer; }
+    button:hover { background: #2f49b3; }
+    button.delete { background: #e03131; }
+    button.delete:hover { background: #c92a2a; }
+    #errorMsg { color: #e03131; margin: 6px 0 12px; font-weight: 600; min-height: 1.2em; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px 8px; border-bottom: 1px solid #eee; text-align: left; }
+    .done { text-decoration: line-through; color: #868e96; }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">Unit Tracker</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Dashboard</a></li>
+      <li><a href="units.html">Units</a></li>
+      <li><a href="assignments.html">Assignments</a></li>
+    </ul>
+  </nav>
 
-    <form id="assignmentForm">
-      <input
-        type="text"
-        id="titleInput"
-        placeholder="Assignment title"
-        required
-      />
-      <input type="date" id="dueDateInput" required />
-      <button type="submit">Add</button>
-    </form>
+  <main class="container">
+    <div class="card">
+      <h1 style="margin-top:0;">Assignments</h1>
+      <form id="assignmentForm">
+        <input type="text" id="titleInput" placeholder="Assignment title" required />
+        <input type="date" id="dueDateInput" required />
+        <button type="submit">Add</button>
+      </form>
+      <p id="errorMsg"></p>
+      <table>
+        <thead>
+          <tr><th>Done</th><th>Title</th><th>Due Date</th><th>Actions</th></tr>
+        </thead>
+        <tbody id="assignmentsBody"></tbody>
+      </table>
+    </div>
+  </main>
 
-    <p id="errorMsg"></p>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Done</th>
-          <th>Title</th>
-          <th>Due Date</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="assignmentsBody"></tbody>
-    </table>
-
-    <script src="assignments.js"></script>
-  </body>
+  <script src="assignments.js"></script>
+</body>
 </html>
