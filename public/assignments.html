@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit Tracker — Assignments</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      max-width: 820px;
+      margin: 40px auto;
+      padding: 0 16px;
+      background: #f8fafc;
+      color: #0f172a;
+    }
+    h1 { margin-bottom: 16px; }
+    form {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      background: #fff;
+      padding: 16px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      margin-bottom: 14px;
+    }
+    input, select, button {
+      padding: 8px 10px;
+      font-size: 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+    }
+    input[type="text"] { flex: 1; min-width: 180px; }
+    button {
+      background: #2563eb;
+      color: #fff;
+      border-color: #2563eb;
+      cursor: pointer;
+    }
+    button:hover { background: #1d4ed8; }
+    button.secondary {
+      background: #e2e8f0;
+      color: #0f172a;
+      border-color: #cbd5e1;
+    }
+    button.danger {
+      background: #dc2626;
+      border-color: #dc2626;
+    }
+    #errorMsg {
+      color: #b91c1c;
+      background: #fee2e2;
+      border: 1px solid #fecaca;
+      padding: 10px 12px;
+      border-radius: 6px;
+      margin-bottom: 14px;
+      display: none;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    th { background: #f1f5f9; font-size: 13px; text-transform: uppercase; }
+    tr.done-row td.title-cell {
+      text-decoration: line-through;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <h1>Assignments</h1>
+
+  <form id="assignmentForm">
+    <input type="text" id="titleInput" placeholder="Assignment title" required />
+    <input type="date" id="dueDateInput" required />
+    <select id="unitSelect">
+      <option value="">No unit</option>
+    </select>
+    <button type="submit" id="submitBtn">Add Assignment</button>
+    <button type="button" id="cancelEditBtn" class="secondary" style="display: none;">Cancel</button>
+  </form>
+
+  <div id="errorMsg"></div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Done</th>
+        <th>Title</th>
+        <th>Due Date</th>
+        <th>Unit ID</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="assignmentsBody"></tbody>
+  </table>
+
+  <script src="assignments.js"></script>
+</body>
+</html>

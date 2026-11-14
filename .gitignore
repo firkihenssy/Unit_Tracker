@@ -147,3 +147,8 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# Personal progress notes
+eliud_progress.md
+job.md
+system_explainer.html
