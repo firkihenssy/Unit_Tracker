@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Tracker Dashboard</title>
+    <!-- Connects to your CSS file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <nav class="navbar">
+        <div class="nav-brand">Unit Tracker</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="units.html">Units</a></li>
+            <li><a href="assignments.html">Assignments</a></li>
+        </ul>
+    </nav>
+    
+    <main class="dashboard-container">
+        <section class="dashboard-grid">
+            <div class="card" id="progress-card">
+                <h2>Progress</h2>
+                <p id="progress-text">Loading...</p>
+            </div>
+            
+            <div class="card" id="upcoming-card">
+                <h2>Upcoming</h2>
+                <ul id="upcoming-list"></ul>
+            </div>
+
+            <div class="card" id="overdue-card">
+                <h2>Overdue</h2>
+                <ul id="overdue-list"></ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- Connects to your JavaScript file -->
+    <script src="dashboard.js"></script>
+</body>
+</html>
