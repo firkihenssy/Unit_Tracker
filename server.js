@@ -8,4 +8,8 @@ app.use('/units', require('./routes/units'));
 app.use('/assignments', require('./routes/assignments'));
 app.use('/dashboard', require('./routes/dashboard'));
 
+app.get('/', (req, res) => {
+  res.send('Unit Tracker API is running');
+});
+
 app.listen(3000, () => console.log('Running on http://localhost:3000'));

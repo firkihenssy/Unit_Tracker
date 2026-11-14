@@ -39,6 +39,7 @@ build/Release
 
 # Dependency directories
 node_modules/
+data/
 jspm_packages/
 
 # Snowpack dependency directory (https://snowpack.dev/)
@@ -147,3 +148,12 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# Personal progress notes
+eliud_progress.md
+job.md
+system_explainer.html
+
+# SQLite database
+*.db
+data.json
