@@ -2,157 +2,73 @@ const form = document.getElementById('assignmentForm');
 const titleInput = document.getElementById('titleInput');
 const dueDateInput = document.getElementById('dueDateInput');
 const unitSelect = document.getElementById('unitSelect');
-const submitBtn = document.getElementById('submitBtn');
-const cancelEditBtn = document.getElementById('cancelEditBtn');
 const errorMsg = document.getElementById('errorMsg');
-const assignmentsBody = document.getElementById('assignmentsBody');
+const tbody = document.getElementById('assignmentsBody');
 
-let editingId = null;
-
-function showError(message) {
-  errorMsg.textContent = message;
-  errorMsg.style.display = 'block';
-}
-
-function clearError() {
+async function request(url, method = 'GET', body) {
   errorMsg.textContent = '';
-  errorMsg.style.display = 'none';
+  const opts = { method, headers: { 'Content-Type': 'application/json' } };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(url, opts);
+  const data = await res.json();
+  if (!res.ok) { errorMsg.textContent = data.error || 'Request failed'; return null; }
+  return data;
 }
 
 async function loadUnits() {
   try {
     const res = await fetch('/units');
-    const contentType = res.headers.get('content-type') || '';
-    if (!res.ok || !contentType.includes('application/json')) return;
-
-    const units = await res.json();
-    unitSelect.innerHTML = '<option value="">No unit</option>';
-    units.forEach((u) => {
-      const opt = document.createElement('option');
-      opt.value = u.id;
-      opt.textContent = u.code ? `${u.code} — ${u.name}` : u.name;
-      unitSelect.appendChild(opt);
-    });
-  } catch {
-    // Units route is still a placeholder; keep "No unit" option
-  }
+    if (!res.ok || !(res.headers.get('content-type') || '').includes('json')) return;
+    (await res.json()).forEach(u => unitSelect.add(new Option(u.name, u.id)));
+  } catch {}
 }
 
 async function loadAssignments() {
-  const res = await fetch('/assignments');
-  const items = await res.json();
-
-  assignmentsBody.innerHTML = '';
-
-  items.forEach((item) => {
+  const items = await request('/assignments');
+  if (!items) return;
+  tbody.innerHTML = '';
+  items.forEach(item => {
     const tr = document.createElement('tr');
-    if (item.done) tr.classList.add('done-row');
-
-    const doneTd = document.createElement('td');
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.checked = Boolean(item.done);
-    checkbox.addEventListener('change', () => toggleDone(item.id));
-    doneTd.appendChild(checkbox);
-
-    const titleTd = document.createElement('td');
-    titleTd.className = 'title-cell';
-    titleTd.textContent = item.title;
-
-    const dateTd = document.createElement('td');
-    dateTd.textContent = item.due_date;
-
-    const unitTd = document.createElement('td');
-    unitTd.textContent = item.unit_id ?? '-';
-
-    const actionsTd = document.createElement('td');
-    const editBtn = document.createElement('button');
-    editBtn.type = 'button';
-    editBtn.className = 'secondary';
-    editBtn.textContent = 'Edit';
-    editBtn.style.marginRight = '6px';
-    editBtn.addEventListener('click', () => startEdit(item));
-
-    const delBtn = document.createElement('button');
-    delBtn.type = 'button';
-    delBtn.className = 'danger';
-    delBtn.textContent = 'Delete';
-    delBtn.addEventListener('click', () => deleteAssignment(item.id));
-
-    actionsTd.append(editBtn, delBtn);
-    tr.append(doneTd, titleTd, dateTd, unitTd, actionsTd);
-    assignmentsBody.appendChild(tr);
+    if (item.done) tr.className = 'done';
+    tr.innerHTML = `<td><input type="checkbox" ${item.done ? 'checked' : ''}></td>
+      <td></td><td></td><td></td><td><button>Edit</button> <button>Delete</button></td>`;
+    const cells = tr.querySelectorAll('td');
+    cells[1].textContent = item.title;
+    cells[2].textContent = item.due_date;
+    cells[3].textContent = item.unit_id ?? '-';
+    tr.querySelector('input').onchange = () => toggleDone(item.id);
+    const [editBtn, delBtn] = tr.querySelectorAll('button');
+    editBtn.onclick = () => editAssignment(item);
+    delBtn.onclick = () => deleteAssignment(item.id);
+    tbody.appendChild(tr);
   });
 }
 
-function startEdit(item) {
-  editingId = item.id;
-  titleInput.value = item.title;
-  dueDateInput.value = item.due_date;
-  unitSelect.value = item.unit_id ?? '';
-  submitBtn.textContent = 'Save Changes';
-  cancelEditBtn.style.display = 'inline-block';
-}
-
-function resetForm() {
-  editingId = null;
-  form.reset();
-  submitBtn.textContent = 'Add Assignment';
-  cancelEditBtn.style.display = 'none';
-}
-
-cancelEditBtn.addEventListener('click', () => {
-  clearError();
-  resetForm();
-});
-
-form.addEventListener('submit', async (e) => {
+form.onsubmit = async (e) => {
   e.preventDefault();
-  clearError();
-
-  const payload = {
-    title: titleInput.value,
-    due_date: dueDateInput.value,
-    unit_id: unitSelect.value ? Number(unitSelect.value) : null
-  };
-
-  const url = editingId ? `/assignments/${editingId}` : '/assignments';
-  const method = editingId ? 'PUT' : 'POST';
-
-  const res = await fetch(url, {
-    method,
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  });
-
-  const data = await res.json();
-  if (!res.ok) {
-    showError(data.error || 'Something went wrong');
-    return;
+  const unit_id = unitSelect.value ? Number(unitSelect.value) : null;
+  if (await request('/assignments', 'POST', { title: titleInput.value, due_date: dueDateInput.value, unit_id })) {
+    form.reset();
+    loadAssignments();
   }
-
-  resetForm();
-  await loadAssignments();
-});
+};
 
 async function toggleDone(id) {
-  clearError();
-  const res = await fetch(`/assignments/${id}/done`, { method: 'PATCH' });
-  if (!res.ok) {
-    showError('Could not update assignment status');
-    return;
+  if (await request(`/assignments/${id}/done`, 'PATCH')) loadAssignments();
+}
+
+async function editAssignment(item) {
+  const title = prompt('New title:', item.title);
+  if (title === null) return;
+  const due_date = prompt('New due date (YYYY-MM-DD):', item.due_date);
+  if (due_date === null) return;
+  if (await request(`/assignments/${item.id}`, 'PUT', { title, due_date, unit_id: item.unit_id })) {
+    loadAssignments();
   }
-  await loadAssignments();
 }
 
 async function deleteAssignment(id) {
-  clearError();
-  const res = await fetch(`/assignments/${id}`, { method: 'DELETE' });
-  if (!res.ok) {
-    showError('Could not delete assignment');
-    return;
-  }
-  await loadAssignments();
+  if (await request(`/assignments/${id}`, 'DELETE')) loadAssignments();
 }
 
 loadUnits();

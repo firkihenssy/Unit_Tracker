@@ -152,3 +152,6 @@ vite.config.ts.timestamp-*
 eliud_progress.md
 job.md
 system_explainer.html
+
+# SQLite database
+*.db
