@@ -9,20 +9,28 @@ async function loadUnits() {
 
   list.innerHTML = '';
   units.forEach(unit => {
-    const li = document.createElement('li');
-    li.textContent = `${unit.code} - ${unit.name} (${unit.lecturer || 'no lecturer'}, sem ${unit.semester || '?'}) `;
+  const li = document.createElement('li');
 
-    const editBtn = document.createElement('button');
-    editBtn.textContent = 'Edit';
-    editBtn.onclick = () => editUnit(unit);
+  const info = document.createElement('span');
+  info.textContent = `${unit.code} - ${unit.name} (${unit.lecturer || 'no lecturer'}, sem ${unit.semester || '?'})`;
 
-    const deleteBtn = document.createElement('button');
-    deleteBtn.textContent = 'Delete';
-    deleteBtn.onclick = () => deleteUnit(unit.id);
+  const actions = document.createElement('div');
+  actions.className = 'actions';
 
-    li.append(editBtn, deleteBtn);
-    list.appendChild(li);
-  });
+  const editBtn = document.createElement('button');
+  editBtn.textContent = 'Edit';
+  editBtn.className = 'edit';
+  editBtn.onclick = () => editUnit(unit);
+
+  const deleteBtn = document.createElement('button');
+  deleteBtn.textContent = 'Delete';
+  deleteBtn.className = 'delete';
+  deleteBtn.onclick = () => deleteUnit(unit.id);
+
+  actions.append(editBtn, deleteBtn);
+  li.append(info, actions);
+  list.appendChild(li);
+});
 }
 
 // Add a unit when the form is submitted
